@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>vozFake</title>
+	{% load static %}
+	<link rel="icon" type="image/png" sizes="32x32" href="{% static 'forums/vozfavicon-32x32.png' %}">
+	<link rel="icon" type="image/png" sizes="16x16" href="{% static 'forums/vozfavicon-16x16.png' %}">
+</head>
+<body>
+	<div>
+		{% if subforum_list %}
+			<ul>
+			{% for subforum in subforum_list %}
+				<li><a href="{% url 'forums:sub_forum' subforum.id %}">{{ subforum.sub_forum_name }}</a></li>
+			{% endfor %}
+			</ul>
+		{% else %}
+			<p>No forums are available.</p>
+		{% endif %}
+	</div>
+</body>
+</html>

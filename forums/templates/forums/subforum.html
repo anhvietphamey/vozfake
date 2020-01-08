@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{ subforum.sub_forum_name }}</title>
+	{% load static %}
+	<link rel="icon" type="image/png" sizes="32x32" href="{% static 'forums/vozfavicon-32x32.png' %}">
+	<link rel="icon" type="image/png" sizes="16x16" href="{% static 'forums/vozfavicon-16x16.png' %}">
+</head>
+<body style="font-family: sans-serif; color: blue;text-align: left;">
+<h3 style="font-size: 15px;color: red;border: 1px;background-color: black;padding: 5px">{{ subforum.sub_forum_name }}</h3><br>
+<div>
+	{% if subforum.thread_set.all %}
+		{% for thread in subforum.thread_set.all %}
+		<ul>
+			<li>
+				<a href="{% url 'forums:thread' thread.id %}"><strong>{{ thread.thread_name }}</strong></a><br>
+				<p style="font-style: italic;">Replies: {{ thread.post_set.count }} - Views: {{ thread.views }}</p>
+			</li>
+		</ul>
+		{% endfor %}
+	{% else %}
+		<p>No threads are available.</p>
+	{% endif %}
+</div>
+</body>
+</html>
