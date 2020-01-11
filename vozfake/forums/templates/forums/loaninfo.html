@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tính lịch trả nợ kiểu VOZ - Thông tin khoản vay</title>
+	{% load static %}
+	<link rel="icon" type="image/png" sizes="32x32" href="{% static 'forums/vozfavicon-32x32.png' %}">
+	<link rel="icon" type="image/png" sizes="16x16" href="{% static 'forums/vozfavicon-16x16.png' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'forums/bootstrap.min.css' %}">
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript">
+		function setInputFilter(textbox, inputFilter) {
+  			["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+				    textbox.addEventListener(event, function() {
+				      if (inputFilter(this.value)) {
+				        this.oldValue = this.value;
+				        this.oldSelectionStart = this.selectionStart;
+				        this.oldSelectionEnd = this.selectionEnd;
+				      } else if (this.hasOwnProperty("oldValue")) {
+				        this.value = this.oldValue;
+				        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+				      } else {
+				        this.value = "";
+				      }
+				    });
+ 				 });
+  		function addCommas(nStr)
+		{
+		    nStr += '';
+		    x = nStr.split('.');
+		    x1 = x[0];
+		    x2 = x.length > 1 ? '.' + x[1] : '';
+		    var rgx = /(\d+)(\d{3})/;
+		    while (rgx.test(x1)) {
+		        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+		    }
+		    return x1 + x2;
+		}
+}	</script>
+</head>
+<body style="background-color: black">
+	<div class="container">
+		<a href="{% url 'forums:index' %}">
+			<img src="{% static 'forums/vozlogo.gif' %}" border="0" alt="vozForums" width="184" height="90" title="vozForums">
+		</a>
+	</div>
+	<div class="container" style="background-color: #f2f2f2">
+		<form action="{% url 'forums:loan_repayment' %}" method="post">
+		{% csrf_token %}
+		<table class="table">
+			<tr style="padding: 5px">
+				<td><label>Số tiền vay </label></td>
+				<td>
+					<input type="text" name="principal" id="money" maxlength="14" style="text-align: right;"> VND
+					<!-- cái này để format số tiền -->
+					<script type="text/javascript">
+						jQuery("#money").keyup(function () {
+			                var str = jQuery(this).val();
+			                str = str.replace(/\D+/g, '');
+			                str = str.replace(/^(0*)/, '');
+			                jQuery(this).val(str.replace(/\d(?=(?:\d{3})+(?!\d))/g, '$&,'));
+			            });
+					</script>
+										
+				</td>
+			</tr>
+			<tr>
+				<td><label>Thời gian vay </label></td>
+				<td><input type="text" maxlength="3" id="periods" name="periods" style="text-align: right;"> tháng</td>
+				<!-- cái này để chỉ cho phép nhập số: -->
+				<script type="text/javascript">
+					setInputFilter(document.getElementById("periods"), function(value) {
+							return /^\d*\.?\d*$/.test(value); // Allow digits and '.' only, using a RegExp
+						});
+        		</script>
+			</tr>
+			<tr>
+				<td><label>Lãi suất </label></td>
+				<td><input type="text" name="ir" maxlength="5" id="ir" style="text-align: right;"> %/năm
+					<script type="text/javascript">
+					setInputFilter(document.getElementById("ir"), function(value) {
+							return /^\d*\.?\d*$/.test(value); // Allow digits and '.' only, using a RegExp
+						});
+        			</script>
+				</td>
+			</tr>
+			<tr>
+				<td><label>Ngày giải ngân </label></td>
+				<td><input type="text" name="start_date" id="datetimepicker" placeholder="Click để chọn ngày" style="text-align: right;"> mm/dd/yyyy
+				<script type="text/javascript">
+					$(function () {
+						$('#datetimepicker').datepicker();
+					})
+				</script></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<input type="submit" value="Tính" class="btn" style="background-color: green;color: white">				
+					<input type="reset" value="Clear" class="btn" style="background-color: red;color: white">
+				</td>				
+			</tr>
+		</table>
+		</form>
+								
+	</div>
+</body>
+</html>

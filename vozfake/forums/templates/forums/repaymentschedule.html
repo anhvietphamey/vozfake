@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tính lịch trả nợ kiểu VOZ - Lịch trả nợ chi tiết</title>
+	{% load static %}
+	<link rel="icon" type="image/png" sizes="32x32" href="{% static 'forums/vozfavicon-32x32.png' %}">
+	<link rel="icon" type="image/png" sizes="16x16" href="{% static 'forums/vozfavicon-16x16.png' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'forums/bootstrap.min.css' %}">
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+</head>
+<body style="background-color: black">
+	<div class="container">
+		<a href="{% url 'forums:index' %}">
+			<img src="{% static 'forums/vozlogo.gif' %}" border="0" alt="vozForums" width="184" height="90" title="vozForums">
+		</a>
+	</div>
+	{% load humanize %}
+	<div class="container" style="background-color: #f2f2f2">
+		<h4>
+			<a href="{% url 'forums:index' %}">Forum</a> > Lịch trả nợ chi tiết
+		</h4>
+		<b><h5>Thông tin khoản vay</h5></b>
+		<div class="row">
+			<div class="col">Số tiền vay:</div><div class="col" style="text-align: right;">{{ start_principal|intcomma }} VND</div><div class="col-8"></div>
+		</div>
+		<div class="row">
+			<div class="col">Thời gian vay:</div><div class="col" style="text-align: right;">{{ periods|intcomma }} tháng</div><div class="col-8"></div>
+		</div>
+		<div class="row">
+			<div class="col">Lãi suất:</div><div class="col" style="text-align: right;">{{ ir|intcomma }}%/năm</div><div class="col-8"></div>
+		</div>
+		<div class="row" style="margin-bottom: 10px">
+			<div class="col">Ngày giải ngân: </div><div class="col" style="text-align: right;">{{ start_date }}</div><div class="col-8"></div>
+		</div>
+		
+	</div>
+	<div class="container" style="background-color: #f2f2f2">
+		
+		<table class="table table-border table-hover table-striped">
+			<thead class="thead-dark" style="text-align: right;">
+				
+					<th style="text-align: left;">Ngày trả nợ</th>
+					<th>Gốc vay đầu kỳ</th>
+					<th>Trả gốc</th>
+					<th>Trả lãi</th>
+					<th>Tổng trả</th>
+					<th>Gốc vay cuối kỳ</th>
+				
+			</thead>			
+			<tbody>
+				<!-- load humanize to format number with thousand separator -->
+				
+				{% for row in df.itertuples %}
+				<tr style="text-align: right;">					
+					<td style="text-align: left;">{{ row.1|date:"Y-m-d" }}</td>
+					<td>{{ row.2|intcomma }}</td>
+					<td>{{ monthly_principal|intcomma }}</td>
+					<td>{{ row.3|intcomma }}</td>
+					<td>{{ row.4|intcomma }}</td>
+					<td>{{ row.5|intcomma }}</td>					
+				</tr>
+				{% endfor %}
+
+				<tr style="background-color: indigo;color: white;text-align: right;">
+					<b>
+					<td style="text-align: left;">Tổng</td>
+					<td></td>
+					<td>{{ total_principal|intcomma }}</td>
+					<td>{{ total_interest|intcomma }}</td>
+					<td>{{ total_payment|intcomma }}</td>
+					<td></td>
+					</b>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

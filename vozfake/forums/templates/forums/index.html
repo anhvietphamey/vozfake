@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>vozFake - Vì một voz không dốt toán</title>
+	{% load static %}
+	<link rel="icon" type="image/png" sizes="32x32" href="{% static 'forums/vozfavicon-32x32.png' %}">
+	<link rel="icon" type="image/png" sizes="16x16" href="{% static 'forums/vozfavicon-16x16.png' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'forums/bootstrap.min.css' %}">
+</head>
+<body style="background-color: black">
+	<div class="container">
+		<a href="{% url 'forums:index' %}">
+			<img src="{% static 'forums/vozlogo.gif' %}" border="0" alt="vozForums" width="184" height="90" title="vozForums">
+		</a>
+	</div>
+	<div class="container" style="background-color: #f2f2f2">
+		
+		<table class="table table-hover table-border">
+			<thead class="bg-secondary text-white">
+				<tr>
+					<th>Forum</th>
+					<th>Threads</th>
+					<th>Views</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if subforum_list %}
+				{% for subforum in subforum_list %}
+					<tr>
+						<td><a href="{% url 'forums:sub_forum' subforum.id %}">{{ subforum.sub_forum_name }}</a></td>
+						<td>{{ subforum.thread_set.count }}</td>
+						<td></td>
+					</tr>
+				{% endfor %}
+				{% else %}
+					<p>No forums are available.</p>
+				{% endif %}
+
+				<tr>
+					<td><a href="{% url 'forums:loaninfo_django' %}">Tính lịch trả nợ kiểu Django</a></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{ thread.thread_name }}</title>
+	{% load static %}
+	<link rel="icon" type="image/png" sizes="32x32" href="{% static 'forums/vozfavicon-32x32.png' %}">
+	<link rel="icon" type="image/png" sizes="16x16" href="{% static 'forums/vozfavicon-16x16.png' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'forums/bootstrap.min.css' %}">
+</head>
+<body style="background-color: black">
+	<div class="container">
+		<a href="{% url 'forums:index' %}">
+			<img src="{% static 'forums/vozlogo.gif' %}" border="0" alt="vozForums" width="184" height="90" title="vozForums">
+		</a>
+	</div>
+	<div class="container bg-white">
+		<h4>
+			<a href="{% url 'forums:index' %}">Forum</a>
+			 > <a href="{% url 'forums:sub_forum' thread.parent.id %}">{{ thread.parent.sub_forum_name }}</a>
+			 > {{ thread.thread_name }}
+		</h4>
+		<p style="font-style: italic;font-size: 10px">Created by: {{ thread.created_by }} -- {{ thread.created_on }}</p>
+	</div>
+	<div class="container bg-white">				
+		<p>{{ thread.thread_content }}</p>
+	</div>
+</body>
+</html>
